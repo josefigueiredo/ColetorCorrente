@@ -6,7 +6,6 @@ boolean estado = false;
 void setup() {
 	Serial.begin(9600);
 	pinMode(led,OUTPUT);
-	//comentario para alterar o arquviso
 }
 
 void loop() {
