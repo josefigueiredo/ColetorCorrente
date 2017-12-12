@@ -2,6 +2,7 @@
 
 void setup() {
 	Serial.begin(9600);
+	//comentario para alterar o arquviso
 }
 
 void loop() {
