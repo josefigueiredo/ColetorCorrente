@@ -14,7 +14,7 @@ private:
 	uint8_t _pino;
 	uint8_t _nHarmonicas;
 
-	float[14]__ganhos;
+	float *_ganhos;
 
 	void setPino(uint8_t);
 
