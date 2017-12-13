@@ -13,15 +13,14 @@
 
 class Leituras {
 private:
-	Sensor _s;
 	uint8_t _freq;
 	uint8_t _amostras;
 	//uint16_t _leituras[_amostras];
 
 public:
-	Leituras(Sensor, uint8_t,uint8_t);
+	Leituras(uint8_t,uint8_t);
 	virtual ~Leituras();
-	void executaLeitura(uint16_t *);
+	void executaLeitura(Sensor *, uint16_t *);
 };
 
 #endif /* LIBS_LEITURAS_H_ */
