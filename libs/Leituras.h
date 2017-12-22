@@ -15,12 +15,12 @@ class Leituras {
 private:
 	uint8_t _freq;
 	uint8_t _amostras;
-	//uint16_t _leituras[_amostras];
-
+	uint8_t _tEstimadoConversao;
 public:
 	Leituras(uint8_t,uint8_t);
 	virtual ~Leituras();
 	void executaLeitura(Sensor *, uint16_t *);
+	uint8_t estimaTempoConversao(Sensor *);
 };
 
 #endif /* LIBS_LEITURAS_H_ */
