@@ -20,7 +20,7 @@ DFT::~DFT() {
 	// TODO Auto-generated destructor stub
 }
 
-void DFT::calcHarmonicas(uint16_t *origem, float *harmonicas) {
+void DFT::calcHarmonicas(float *origem, float *harmonicas) {
 	float accReal = 0.0, accImag = 0.0;
 
 	//aplica a dft gerando dois vetores: Real e Imaginario

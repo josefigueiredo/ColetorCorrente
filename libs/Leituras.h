@@ -19,7 +19,7 @@ private:
 public:
 	Leituras(uint8_t,uint8_t);
 	virtual ~Leituras();
-	void executaLeitura(Sensor *, uint16_t *);
+	void executaLeitura(Sensor *, float *);
 	uint8_t estimaTempoConversao(Sensor *);
 };
 

@@ -19,13 +19,12 @@ Leituras::~Leituras() {
 
 
 
-void Leituras::executaLeitura(Sensor *s, uint16_t *valores){
+void Leituras::executaLeitura(Sensor *s, float *valores){
 	//intervalo entre uma amostra e outra conforme a frequencia
 	uint16_t periodo = (_freq == 60)?16666:20000;
 	uint16_t intervalo = (periodo/_amostras) - _tEstimadoConversao;
-	Serial.println(_tEstimadoConversao);
 	for(uint8_t i=0;i<_amostras;i++){
-		valores[i] = s->getValor();
+		valores[i] = (float)s->getValor()*5/1023;
 		delayMicroseconds(intervalo);
 	}
 }

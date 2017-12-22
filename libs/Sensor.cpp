@@ -14,9 +14,10 @@
  */
 Sensor::Sensor(String s,uint8_t nHarmonicas,uint8_t p) {
 	// TODO Auto-generated constructor stub
-	_nHarmonicas = nHarmonicas;
 	setPino(p);
+	_nHarmonicas = nHarmonicas;
 	_ganhos = new float[_nHarmonicas];
+	setGanhoPorHarmonica(s);
 }
 
 Sensor::~Sensor() {
@@ -39,15 +40,15 @@ void Sensor::setPino(uint8_t p) {
  * @params: string com os ganhos separados por vírgula.
  */
 void Sensor::setGanhoPorHarmonica(String s){
-	uint8_t pos = s.indexOf(";");
-	uint8_t ini = 0;
+	uint8_t iniSub = 0;
+	uint8_t fimSub = s.indexOf(",");
 	String partial;
 
 	for(uint8_t i=0;i<_nHarmonicas;i++){
-		partial = s.substring(ini,pos);
+		partial = s.substring(iniSub,fimSub);
 		_ganhos[i] = partial.toFloat();
-		ini = pos+1;
-		pos = s.indexOf(";");
+		iniSub = fimSub+1;
+		fimSub = s.indexOf(",",iniSub);
 	}
 }
 /**

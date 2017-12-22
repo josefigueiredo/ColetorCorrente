@@ -19,7 +19,7 @@ private:
 public:
 	DFT(uint8_t);
 	virtual ~DFT();
-	void calcHarmonicas(uint16_t *,float *);
+	void calcHarmonicas(float *,float *);
 	void calMagX();
 
 	float getImagX(uint8_t );
