@@ -13,14 +13,13 @@
 class DFT {
 private:
 	uint8_t _amostras;
-	float *_realX,*_magX;
-	float *_imagX,*_phaseX;
+	float *_realX,*_magX,*_imagX,*_phaseX;
 	float _piVezes2 = 2 * M_PI;
 public:
 	DFT(uint8_t);
 	virtual ~DFT();
-	void calcHarmonicas(float *,float *);
-	void calMagX();
+	void calcHarmonicas(float *);
+	void calcMagnitude();
 
 	float getImagX(uint8_t );
 	float getRealX(uint8_t );

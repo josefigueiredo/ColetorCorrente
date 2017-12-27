@@ -9,13 +9,17 @@ const uint8_t ps64 = (1 << ADPS2) | (1 << ADPS1) | (0 << ADPS0);
 const uint8_t ps128 = (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);
 
 uint8_t frequenciaRede = 60;
-uint8_t numeroAmostras = 32;
+uint8_t numeroAmostras = 64;
 uint8_t nHarmonicas = 13;
 float *valoresLidos;
-float *harmonicas;
 
 extern int __bss_end;
 extern void *__brkval;
+
+char cmd;
+uint8_t porTempo = 0;
+
+
 
 int memoriaLivre() {
 	int memLivre;
@@ -32,24 +36,13 @@ Sensor sensor1(
 Leituras leitura(frequenciaRede, numeroAmostras);
 DFT dft(numeroAmostras);
 
-void setup() {
-	//alteração do prescaler do conversor AD
-	//ativa prescaler 64
-	//ADCSRA &= ~ps128;
-	//ADCSRA |= ps64;
 
-	Serial.begin(9600);
-	valoresLidos = new float[numeroAmostras];
-	harmonicas = new float[nHarmonicas];
-
-	leitura.estimaTempoConversao(&sensor1);
-
-}
-
-void loop() {
+void rotina(){
 	leitura.executaLeitura(&sensor1, valoresLidos);
-	dft.calcHarmonicas(valoresLidos, harmonicas);
-	dft.calMagX();
+	//valoresLidos = {2.50, 2.50, 2.50, 2.50, 2.50, 2.50, 2.50, 2.50, 2.50, 2.50, 2.50, 2.50, 2.50, 2.50, 2.50, 2.50, 2.50, 2.50, 2.50, 2.50, 2.50, 2.50, 2.50, 2.50, 2.50, 2.49, 2.50, 2.50, 2.50, 2.50, 2.50, 2.50};
+	//valoresLidos = {2.47, 2.48, 2.49, 2.50, 2.52, 2.53, 2.54, 2.55, 2.55, 2.55, 2.54, 2.54, 2.53, 2.52, 2.51, 2.50, 2.48, 2.47, 2.46, 2.45, 2.45, 2.44, 2.45, 2.45, 2.45, 2.46, 2.47, 2.48, 2.50, 2.51, 2.52, 2.53};
+	dft.calcHarmonicas(valoresLidos);
+	dft.calcMagnitude();
 
 	Serial.println("Valores lidos:");
 	for (int i = 0; i < numeroAmostras; i++) {
@@ -61,35 +54,68 @@ void loop() {
 	Serial.println("realX: ");
 	for (int i = 0; i < numeroAmostras / 2; i++) {
 		Serial.print(" ");
-		Serial.print(dft.getRealX(i));
+		Serial.print(dft.getRealX(i),4);
 	}
 	Serial.println("");
 
 	Serial.println("imagX: ");
 	for (int i = 0; i < numeroAmostras / 2; i++) {
 		Serial.print(" ");
-		Serial.print(dft.getImagX(i));
+		Serial.print(dft.getImagX(i),4);
 
 	}
 	Serial.println("");
 
-	Serial.println("magnitude:");
+	Serial.println("magnitude em volts:");
 	for (int i = 0; i < nHarmonicas; i++) {
 		Serial.print(" ");
-		Serial.print(dft.getMagX(i), 3);
+		Serial.print(dft.getMagX(i), 4);
 	}
 	Serial.println("");
 
 	Serial.println("magnitude convertida para corrente");
 	for (int i = 0; i < nHarmonicas; i++) {
-		Serial.print(" ");
-		Serial.print(dft.getMagX(i) / sensor1.getGanhoPorHarmonica(i));
+		Serial.print("valorMag: ");Serial.print(dft.getMagX(i+1));Serial.print(" e valorGanho: ");Serial.print(sensor1.getGanhoPorHarmonica(i));
+
+		float tmp = dft.getMagX(i+1) * sensor1.getGanhoPorHarmonica(i);
+		Serial.print("/ convertido: ");
+		Serial.println(tmp,4);
 	}
 	Serial.println("");
 
 	Serial.print("Free memory: ");
 	Serial.println(memoriaLivre(), DEC);
 	Serial.println("");
-	delay(1000);
 }
+
+void setup() {
+	//alteração do prescaler do conversor AD
+	//ativa prescaler 64
+	//ADCSRA &= ~ps128;
+	//ADCSRA |= ps64;
+
+	Serial.begin(9600);
+	valoresLidos = new float[numeroAmostras];
+	leitura.estimaTempoConversao(&sensor1);
+
+	rotina();
+}
+
+void loop() {
+
+	if(Serial.available()){
+		cmd = Serial.read();
+		if(cmd == 'l'){
+			rotina();
+		}
+	}else if(porTempo > 59 ){
+		rotina();
+		porTempo = 0;
+	}
+
+	delay(1000);
+	porTempo += 1;
+}
+
+
 
