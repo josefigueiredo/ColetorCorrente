@@ -11,6 +11,7 @@ Leituras::Leituras(uint8_t f,uint8_t a) {
 	// TODO Auto-generated constructor stub
 	_freq = f;
 	_amostras = a;
+	_tEstimadoConversao = 0;
 }
 
 Leituras::~Leituras() {

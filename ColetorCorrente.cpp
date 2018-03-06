@@ -9,7 +9,7 @@ const uint8_t ps64 = (1 << ADPS2) | (1 << ADPS1) | (0 << ADPS0);
 const uint8_t ps128 = (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);
 
 uint8_t frequenciaRede = 60;
-uint8_t numeroAmostras = 64;
+uint8_t numeroAmostras = 128;
 uint8_t nHarmonicas = 13;
 float *valoresLidos;
 
@@ -107,6 +107,8 @@ void loop() {
 		cmd = Serial.read();
 		if(cmd == 'l'){
 			rotina();
+		}else if(cmd == 'm'){
+			Serial.println(memoriaLivre());
 		}
 	}else if(porTempo > 59 ){
 		rotina();
